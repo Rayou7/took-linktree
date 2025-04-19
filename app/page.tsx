@@ -24,7 +24,24 @@ export default function WindowsLinktree() {
   const [audioLoaded, setAudioLoaded] = useState(false)
   const [loadingBlocks, setLoadingBlocks] = useState<number[]>([])
   const [currentTime, setCurrentTime] = useState("")
+  const [isMobile, setIsMobile] = useState(false)
   const audioRef = useRef<HTMLAudioElement | null>(null)
+
+  // Effect to detect mobile devices
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+
+    // Initial check
+    checkMobile()
+
+    // Add event listener for window resize
+    window.addEventListener("resize", checkMobile)
+
+    // Cleanup
+    return () => window.removeEventListener("resize", checkMobile)
+  }, [])
 
   // Effect for Windows XP startup animation
   useEffect(() => {
@@ -160,7 +177,7 @@ export default function WindowsLinktree() {
   if (isStarting) {
     return (
       <div className="min-h-screen bg-black flex flex-col items-center justify-center overflow-hidden">
-        <div className="w-full max-w-md text-center relative">
+        <div className="w-full max-w-md text-center relative px-4">
           <div className="mb-10">
             <Image src="/windows-xp-logo.png" alt="Windows XP" width={200} height={80} className="mx-auto" />
           </div>
@@ -202,7 +219,218 @@ export default function WindowsLinktree() {
     )
   }
 
-  // Main Windows Vista Linktree
+  // Responsive layout for mobile
+  if (isMobile) {
+    return (
+      <div
+        className="min-h-screen p-2 flex flex-col items-center"
+        style={{
+          backgroundImage: `url('/vista-aurora.png')`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          backgroundPosition: "center center",
+          backgroundAttachment: "fixed",
+          width: "100%",
+          height: "100%",
+          overflow: "auto",
+        }}
+      >
+        {/* Mobile Window Container */}
+        <div className="w-full max-w-[95vw] shadow-xl bg-white rounded-sm overflow-hidden">
+          {/* Title Bar */}
+          <div
+            className="bg-gradient-to-r from-[#0a246a] via-[#0b2e88] to-[#0a246a] flex items-center justify-between px-2 py-1"
+            style={{ border: "2px solid #0a246a", borderBottom: "none" }}
+          >
+            <div className="flex items-center">
+              <Image src="/icons/control-panel.png" alt="My Links" width={16} height={16} className="mr-2" />
+              <span className="text-white text-xs font-bold">My Links - Linktree</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <button className="text-black bg-[#c4c4c4] hover:bg-[#e1e1e1] px-1 rounded-none border border-[#919191] border-t-white border-l-white">
+                <Minus className="h-3 w-3" />
+              </button>
+              <button className="text-black bg-[#c4c4c4] hover:bg-[#e1e1e1] px-1 rounded-none border border-[#919191] border-t-white border-l-white">
+                <Square className="h-3 w-3" />
+              </button>
+              <button
+                className="text-black bg-[#c4c4c4] hover:bg-[#e1e1e1] px-1 rounded-none border border-[#919191] border-t-white border-l-white"
+                onClick={() => {
+                  setIsStarting(true)
+                  setStartupProgress(0)
+                }}
+              >
+                <X className="h-3 w-3" />
+              </button>
+            </div>
+          </div>
+
+          {/* Menu Bar - Simplified for mobile */}
+          <div
+            className="bg-[#ece9d8] flex items-center px-2 py-1 overflow-x-auto"
+            style={{ border: "2px solid #0a246a", borderTop: "none", borderBottom: "1px solid #aca899" }}
+          >
+            <div className="flex items-center gap-3 whitespace-nowrap">
+              <button className="text-black text-xs hover:underline hover:bg-[#f1efe2] px-1 py-0.5 rounded-none">
+                File
+              </button>
+              <button className="text-black text-xs hover:underline hover:bg-[#f1efe2] px-1 py-0.5 rounded-none">
+                Edit
+              </button>
+              <button className="text-black text-xs hover:underline hover:bg-[#f1efe2] px-1 py-0.5 rounded-none">
+                View
+              </button>
+              <button className="text-black text-xs hover:underline hover:bg-[#f1efe2] px-1 py-0.5 rounded-none">
+                Help
+              </button>
+            </div>
+          </div>
+
+          {/* Navigation Bar - Simplified for mobile */}
+          <div
+            className="bg-[#ece9d8] flex items-center px-2 py-1"
+            style={{ border: "2px solid #0a246a", borderTop: "none", borderBottom: "1px solid #aca899" }}
+          >
+            <button className="p-1 rounded-none border border-[#aca899] hover:bg-[#f1efe2] mr-1">
+              <ChevronLeft className="h-4 w-4 text-[#6d6d6d]" />
+            </button>
+            <button className="p-1 rounded-none border border-[#aca899] hover:bg-[#f1efe2] mr-1">
+              <ChevronRight className="h-4 w-4 text-[#6d6d6d]" />
+            </button>
+
+            <div className="flex items-center bg-white border border-[#7a7a7a] rounded-none px-2 py-1 ml-2 flex-1">
+              <span className="text-xs text-[#444]">My Links</span>
+            </div>
+
+            <button
+              className="p-1 rounded-none border border-[#aca899] hover:bg-[#f1efe2] ml-2"
+              onClick={() => {
+                setIsStarting(true)
+                setStartupProgress(0)
+              }}
+            >
+              <RefreshCw className="h-4 w-4 text-[#6d6d6d]" />
+            </button>
+          </div>
+
+          {/* Mobile Content */}
+          <div
+            style={{
+              backgroundColor: "white",
+              padding: "12px",
+              borderLeft: "2px solid #0a246a",
+              borderRight: "2px solid #0a246a",
+            }}
+          >
+            {/* Profile section */}
+            <div className="flex items-center mb-4 bg-[#f5f3e5] p-2 rounded-sm">
+              <div className="w-16 h-16 relative rounded-full overflow-hidden border-2 border-[#0a246a] shadow-md mr-3">
+                <Image
+                  src="/profile-took.png"
+                  alt="Took"
+                  fill
+                  style={{
+                    objectFit: "cover",
+                    objectPosition: "center 20%",
+                  }}
+                />
+              </div>
+              <div>
+                <h2 className="text-[#0a246a] text-lg font-bold">Took</h2>
+                <p className="text-xs text-[#555]">Artist</p>
+              </div>
+            </div>
+
+            <h1 className="text-[#0a246a] text-lg font-normal mb-4 border-b border-[#ece9d8] pb-2">My Social Links</h1>
+
+            {/* Social links grid - Responsive for mobile */}
+            <div className="grid grid-cols-2 gap-4">
+              <a
+                href="https://www.instagram.com/prod.took/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex flex-col items-center hover:opacity-80 transition-opacity p-2 bg-[#f9f8f2] rounded-sm"
+                onClick={playClickSound}
+              >
+                <Image src="/icons/instagram-classic.png" alt="Instagram" width={48} height={48} className="mb-2" />
+                <span className="text-[#0a246a] font-bold text-sm">Instagram</span>
+                <span className="text-xs text-gray-600">Follow</span>
+              </a>
+
+              <a
+                href="https://x.com/prodtook_"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex flex-col items-center hover:opacity-80 transition-opacity p-2 bg-[#f9f8f2] rounded-sm"
+                onClick={playClickSound}
+              >
+                <Image src="/icons/twitter-classic.png" alt="Twitter" width={48} height={48} className="mb-2" />
+                <span className="text-[#0a246a] font-bold text-sm">Twitter</span>
+                <span className="text-xs text-gray-600">Follow</span>
+              </a>
+
+              <a
+                href="https://soundcloud.com/2ook"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex flex-col items-center hover:opacity-80 transition-opacity p-2 bg-[#f9f8f2] rounded-sm"
+                onClick={playClickSound}
+              >
+                <Image src="/icons/soundcloud-official.png" alt="SoundCloud" width={48} height={48} className="mb-2" />
+                <span className="text-[#0a246a] font-bold text-sm">SoundCloud</span>
+                <span className="text-xs text-gray-600">Listen</span>
+              </a>
+
+              <a
+                href="https://www.youtube.com/@p-took"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex flex-col items-center hover:opacity-80 transition-opacity p-2 bg-[#f9f8f2] rounded-sm"
+                onClick={playClickSound}
+              >
+                <Image src="/icons/youtube-retro-tv.png" alt="YouTube" width={48} height={48} className="mb-2" />
+                <span className="text-[#0a246a] font-bold text-sm">YouTube</span>
+                <span className="text-xs text-gray-600">Watch</span>
+              </a>
+
+              <div
+                className="flex flex-col items-center cursor-pointer hover:opacity-80 transition-opacity p-2 bg-[#f9f8f2] rounded-sm col-span-2"
+                onClick={() => {
+                  playClickSound()
+                  alert("Discord: dotmijj")
+                }}
+              >
+                <Image src="/icons/discord-official.png" alt="Discord" width={48} height={48} className="mb-2" />
+                <span className="text-[#0a246a] font-bold text-sm">Discord</span>
+                <span className="text-xs text-gray-600">Find</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Status bar */}
+          <div
+            style={{
+              backgroundColor: "#ece9d8",
+              borderLeft: "2px solid #0a246a",
+              borderRight: "2px solid #0a246a",
+              borderBottom: "2px solid #0a246a",
+              borderTop: "1px solid #aca899",
+              height: "22px",
+              padding: "0 8px",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <span style={{ fontSize: "11px", color: "#333", fontFamily: "Tahoma, sans-serif" }}>5 items</span>
+            <span style={{ fontSize: "11px", color: "#333", fontFamily: "Tahoma, sans-serif" }}>{currentTime}</span>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Desktop layout
   return (
     <div
       className="min-h-screen p-4 flex items-center justify-center"
